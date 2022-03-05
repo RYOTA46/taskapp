@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift   // ←追加
+import UserNotifications    // 追加
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -32,14 +33,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // データの数（＝セルの数）を返すメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return taskArray.count  // ←修正する
     }
     
     // 各セルの内容を返すメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 再利用可能な cell を得る
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        
+        // Cellに値を設定する  --- ここから ---
+        let task = taskArray[indexPath.row]
+        cell.textLabel?.text = task.title
 
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+
+        let dateString:String = formatter.string(from: task.date)
+        cell.detailTextLabel?.text = dateString
+        // --- ここまで追加 ---
+        
         return cell
     }
     
@@ -55,12 +67,42 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Delete ボタンが押された時に呼ばれるメソッド
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // --- ここから ---
+        if editingStyle == .delete {
+            // データベースから削除する
+            try! realm.write {
+                self.realm.delete(self.taskArray[indexPath.row])
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        } // --- ここまで追加 ---
     }
     
-    try! realm.write {
-        self.realm.delete(self.taskArray[indexPath.row])
-        tableView.deleteRows(at: [indexPath], with: .fade)
+    // segue で画面遷移する時に呼ばれる
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        let inputViewController:InputViewController = segue.destination as! InputViewController
+
+        if segue.identifier == "cellSegue" {
+            let indexPath = self.tableView.indexPathForSelectedRow
+            inputViewController.task = taskArray[indexPath!.row]
+        } else {
+            let task = Task()
+
+            let allTasks = realm.objects(Task.self)
+            if allTasks.count != 0 {
+                task.id = allTasks.max(ofProperty: "id")! + 1
+            }
+
+            inputViewController.task = task
+        }
     }
     
+    // 入力画面から戻ってきた時に TableView を更新させる
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+        
 }
 
