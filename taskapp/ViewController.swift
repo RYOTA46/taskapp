@@ -16,6 +16,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Realmインスタンスを取得する
     let realm = try! Realm()  // ←追加
     
+    // DB内のタスクが格納されるリスト。
+    // 日付の近い順でソート：昇順
+    // 以降内容をアップデートするとリスト内は自動的に更新される。
+    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)  // ←追加
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -51,10 +57,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     }
     
-    // DB内のタスクが格納されるリスト。
-    // 日付の近い順でソート：昇順
-    // 以降内容をアップデートするとリスト内は自動的に更新される。
-    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)  // ←追加
+    try! realm.write {
+        self.realm.delete(self.taskArray[indexPath.row])
+        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
     
 }
 
