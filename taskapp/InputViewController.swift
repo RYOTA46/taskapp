@@ -12,18 +12,18 @@ import UserNotifications    // 追加
 class InputViewController: UIViewController {
     
     // カテゴリーピッカーの追加
-    @IBOutlet weak var categoryPicker: UIPickerView!
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var contentsTextView: UITextView!
+    @IBOutlet weak var categoryPicker: UIPickerView!
+    @IBOutlet weak var contentsTextView: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     
     let realm = try! Realm()    // 追加する
     var task: Task!   // 追加する
     // カテゴリーピッカーに表示する内容
-    let categoryList:[String] = [
-        String("Business"),
-        String("Private")
-    ]
+/*    let categoryList:[String] = [
+        "Business",
+        "Private"
+    ]*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
