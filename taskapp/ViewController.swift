@@ -70,12 +70,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // --- ここから ---
         if editingStyle == .delete {
+            // 削除するタスクを取得する
+            let task = self.taskArray[indexPath.row]
+
+            // ローカル通知をキャンセルする
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [String(task.id)])
+
             // データベースから削除する
             try! realm.write {
-                self.realm.delete(self.taskArray[indexPath.row])
+                self.realm.delete(task)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
-        } // --- ここまで追加 ---
+
+            // 未通知のローカル通知一覧をログ出力
+            center.getPendingNotificationRequests { (requests: [UNNotificationRequest]) in
+                for request in requests {
+                    print("/---------------")
+                    print(request)
+                    print("---------------/")
+                }
+            }
+        } // --- ここまで変更 ---
     }
     
     // segue で画面遷移する時に呼ばれる
