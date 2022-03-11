@@ -13,17 +13,12 @@ class InputViewController: UIViewController {
     
     // カテゴリーピッカーの追加
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var categoryPicker: UIPickerView!
-    @IBOutlet weak var contentsTextView: UITextField!
+    @IBOutlet weak var category: UITextField!
+    @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var datePicker: UIDatePicker!
     
     let realm = try! Realm()    // 追加する
     var task: Task!   // 追加する
-    // カテゴリーピッカーに表示する内容
-/*    let categoryList:[String] = [
-        "Business",
-        "Private"
-    ]*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
