@@ -9,19 +9,21 @@ import UIKit
 import RealmSwift   // ←追加
 import UserNotifications    // 追加
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+// 【課題】検索窓(searchBar)の処理を追加するためにUISearchBarDelegateを追加
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     // テーブルのビュー
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     // Realmインスタンスを取得する
     let realm = try! Realm()  // ←追加
+
     
     // DB内のタスクが格納されるリスト。
     // 日付の近い順でソート：昇順
     // 以降内容をアップデートするとリスト内は自動的に更新される。
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)  // ←追加
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        // 【課題】searchBarのデリゲート先を自分に設定
+        searchBar.delegate = self
+        // 【課題】何も入力されていなくてもReturnキーを押せるようにする。
+        searchBar.enablesReturnKeyAutomatically = false
+
     }
     
     // データの数（＝セルの数）を返すメソッド
@@ -117,6 +125,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+    }
+
+    // 【課題】検索文字列入力後「検索」ボタン押下時の処理(プロトコル標準)
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // 【課題】文字入力の編集終了（＝検索押下）がtrueである
+        searchBar.endEditing(true)
+        //検索結果配列を空にする。
+        
+        
     }
     
         
