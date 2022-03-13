@@ -46,7 +46,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <searchBar contentMode="redraw" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmY-14-4Jy">
+                            <searchBar contentMode="redraw" ambiguous="YES" misplaced="YES" text="" placeholder="表示したいカテゴリーを入力してください" translatesAutoresizingMaskIntoConstraints="NO" id="cmY-14-4Jy">
                                 <rect key="frame" x="0.0" y="88" width="414" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
@@ -162,6 +162,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="XDu-Pk-VOW"/>
                     <connections>
+                        <outlet property="category" destination="e0s-e7-oMw" id="efj-OT-prv"/>
                         <outlet property="contentsTextView" destination="rwz-hT-ezV" id="VzX-bt-W5a"/>
                         <outlet property="datePicker" destination="AmP-QD-aXs" id="1ID-LY-xIi"/>
                         <outlet property="titleTextField" destination="e0s-e7-oMw" id="ac5-gm-WnC"/>

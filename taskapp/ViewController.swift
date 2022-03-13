@@ -10,7 +10,7 @@ import RealmSwift   // ←追加
 import UserNotifications    // 追加
 
 // 【課題】検索窓(searchBar)の処理を追加するためにUISearchBarDelegateを追加
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  UISearchController, UISearchBarDelegate {
 
     // テーブルのビュー
     @IBOutlet weak var tableView: UITableView!
@@ -120,13 +120,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             inputViewController.task = task
         }
     }
-    
-    // 入力画面から戻ってきた時に TableView を更新させる
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
-
+        
     // 【課題】検索文字列入力後「検索」ボタン押下時の処理(プロトコル標準)
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // 【課題】文字入力の編集終了（＝検索押下）がtrueである
