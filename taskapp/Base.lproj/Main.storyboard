@@ -162,7 +162,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="XDu-Pk-VOW"/>
                     <connections>
-                        <outlet property="category" destination="e0s-e7-oMw" id="efj-OT-prv"/>
+                        <outlet property="categoryTextField" destination="8HN-6G-BWa" id="MAN-1Z-jPE"/>
                         <outlet property="contentsTextView" destination="rwz-hT-ezV" id="VzX-bt-W5a"/>
                         <outlet property="datePicker" destination="AmP-QD-aXs" id="1ID-LY-xIi"/>
                         <outlet property="titleTextField" destination="e0s-e7-oMw" id="ac5-gm-WnC"/>

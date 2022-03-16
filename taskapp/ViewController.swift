@@ -121,6 +121,31 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
         
+    // 入力画面から戻ってきた時に TableView を更新させる
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        searchBar.endEditing(true)
+        //【課題】検索文字列が空の場合
+        //【課題】検索結果TaskArryを再度格納し直す
+        if searchText == "" {
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)
+        // 【課題】検索文字列が入力されている場合
+        } else {
+            
+            let predicate = NSPredicate(format: "category contains [c] %@", searchBar.text!)
+            taskArray = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
+        }
+        //【課題】テーブルに表示する内容をリロードする
+        tableView.reloadData()
+
+    }
+    
+    /*
     // 【課題】検索文字列入力後「検索」ボタン押下時の処理(プロトコル標準)
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // 【課題】文字入力の編集終了（＝検索押下）がtrueである
@@ -137,6 +162,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         //【課題】テーブルに表示する内容をリロードする
         tableView.reloadData()
-    }
+    }*/
+    
+    
 }
 

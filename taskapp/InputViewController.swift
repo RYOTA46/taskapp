@@ -13,9 +13,9 @@ class InputViewController: UIViewController {
     
     // カテゴリーピッカーの追加
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var category: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var categoryTextField: UITextField!
     
     let realm = try! Realm()    // 追加する
     var task: Task!   // 追加する
@@ -30,7 +30,7 @@ class InputViewController: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
 
         titleTextField.text = task.title
-        category.text = task.category
+        categoryTextField.text = task.category
         contentsTextView.text = task.contents
         datePicker.date = task.date
     }
@@ -44,7 +44,7 @@ class InputViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         try! realm.write {
             self.task.title = self.titleTextField.text!
-            self.task.category = self.category.text!
+            self.task.category = self.categoryTextField.text!
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
             self.realm.add(self.task, update: .modified)
@@ -53,7 +53,7 @@ class InputViewController: UIViewController {
         setNotification(task: task)   // 追加
 
         super.viewWillDisappear(animated)
-        
+    }
         // タスクのローカル通知を登録する --- ここから ---
         func setNotification(task: Task) {
             let content = UNMutableNotificationContent()
@@ -94,8 +94,6 @@ class InputViewController: UIViewController {
             }
         } // --- ここまで追加 ---
         
-    }
-    
 
     /*
     // MARK: - Navigation
